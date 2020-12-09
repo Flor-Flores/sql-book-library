@@ -1,0 +1,39 @@
+extends layout
+
+block content
+  h2 Books  wakawaka
+  a(href="/books/new", class="btn-new") Create book &#43;
+  table
+    thead
+      tr
+        th Title
+        th Author
+        th Genre
+        th Year
+    tbody
+
+      each book in books
+        book
+          tr
+            td
+              a(href=`/books/${book.id}`) #{book.title}
+            td= book.author
+            td= book.genre
+            td= book.year 
+
+
+  //- header  
+  //-   h1= title
+  //- p Welcome to #{title}
+
+  //- block content
+  //-   div.subheader
+  //-     h2 Books
+  //-     a(href="/books/new", class="btn-new") Create book &#43;
+      
+  //-   each book in books
+  //-     book
+  //-       h3= book.title
+  //-       //- include by_line
+  //-       p= book.body
+  //-       a(href = "/books/" + book.id) Read More &rarr;

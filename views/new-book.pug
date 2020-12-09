@@ -1,0 +1,33 @@
+extends layout
+
+block content
+  //- header  
+  //-   h1= title
+  //- p Welcome to #{title}
+
+  block content
+    h1 New Book
+    if errors 
+      h3="Please check your entry"
+      ul
+        each val in errors
+          li= val.message
+    form(action="/books/new", method="post")
+
+      p
+        label(for='title') Title
+        input#title(name='title' type='text' value=mybook.title autofocus='')
+      p
+        label(for='author') Author
+        input#author(name='author' type='text' value=mybook.author)
+      p
+        label(for='genre') Genre
+        input#genre(name='genre' type='text' value=mybook.genre)
+      p
+        label(for='year') Year
+        input#year(name='year' type='text' value=mybook.year)
+      p
+        a.button(href='/books/') Cancel
+      p
+        input(type='submit' value='Create New Book')
+
