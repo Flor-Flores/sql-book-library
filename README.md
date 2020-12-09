@@ -1,7 +1,7 @@
 # Book Library Built Using Express and Sql 
 
 ## Treehouse Techdegree:FSJS 
-### project 8 - React Gallery App
+### project 8 - Sql Library
 
 <!-- #### Built using React.js Axios & React-Router-Dom
 #### The user can use the search form or the navigation with pre defined/loaded searches.
