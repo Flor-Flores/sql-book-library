@@ -2,7 +2,6 @@ var express = require('express');
 var router = express.Router();
 var Book = require("../models").Book;
 
-
 // Handler function to wrap each route. 
 function asyncHandler(cb){
   return async(req, res, next) => {
@@ -26,16 +25,56 @@ router.get('/error', (req, res, next) => {
 })
 
 
+
+router.get('/search/', asyncHandler(async (req, res ) => {
+    const Pagination = require('../utils/pagination')
+    const search = req.query.search;
+    let page_id = 1;
+    if(req.query.curentPage < 1){
+      console.log(req.query.curentPage)
+      page_id = 1;
+    }else{
+      page_id = parseInt(req.query.curentPage);
+  
+    }
+    let currentPage = 1;
+    currentPage = page_id > 0 ? page_id : currentPage;
+    let pageUri = `/search/?search=${search}&curentPage=`;
+    let limit = 5
+    // let offset = 0 + (page_id - 1) * limit
+    let offset = 0 ;
+    const { Op } = require("sequelize");
+  
+    const results = await Book
+    .findAndCountAll({
+      where: {
+          title: {
+            [Op.substring]: search
+          }
+      },
+      offset: offset,
+      limit: 5
+    })  
+  
+    let books = results.rows;
+  
+    const perPage = limit;
+    let totalCount = results.count;
+    // Instantiate Pagination class
+    const Paginate = new Pagination(totalCount,currentPage,pageUri,perPage);
+    let pagination = Paginate;
+  
+        res.render('search',{books, pagination });
+    }));
+  
+  
+
+
+
 router.get('/new', (req, res) => {
   res.render('new-book', {mybook: {}, title: "New Book Entry"})
 })
 
-// post create new book Entry
-// router.post('/', asyncHandler(async (req, res) => {
-//   const mybook = await Book.create(req.body)
-//   res.redirect('/books/' + mybook.id)
-
-// }))
 
 // post create new book Entry with validation
 router.post('/new', asyncHandler(async (req, res) => {
@@ -49,9 +88,6 @@ router.post('/new', asyncHandler(async (req, res) => {
       mybook = await Book.build(req.body);
       console.log(mybook +" insise the post routhe like 55")
       res.render("new-book", { mybook, errors: error.errors, title:'New Book Entry "please check your for errors on your submisions"'})
-      console.log('Fuck')
-      // console.log(error.errors.length)
-      // console.log(error.errors[0].message)
     } else {
       throw error; // error caught in the asyncHandler's catch block
 
@@ -70,27 +106,15 @@ router.get('/:id/edit', asyncHandler(async (req, res) => {
   const mybook = await Book.findByPk(req.params.id);
 
   if(mybook) {
-    res.render("book_detail", { mybook, title: "Edit Book" });      
+    res.render("update-book", { mybook, title: "Edit Book" });      
   } else {
-    res.sendStatus(404);
+    // res.sendStatus(404);
+    throw error; // error caught in the asyncHandler's catch block
+
   }
 
-  // res.render("book_detail", { mybook,  title: "Edit Book Entry"})
 }))
 
-// // update book entry 
-// router.post('/:id/edit', asyncHandler(async (req, res) => {
-//   const mybook = await Book.findByPk(req.params.id);
-//   await mybook.update(req.body);
-
-//   if(mybook) {
-//     await mybook.update(req.body);
-//     res.redirect("/books/" + mybook.id);      
-//   } else {
-//     res.sendStatus(404);
-//   }
-
-// }))
 
 // update book entry w error handling
 router.post('/:id/edit', asyncHandler(async (req, res) => {
@@ -108,7 +132,7 @@ router.post('/:id/edit', asyncHandler(async (req, res) => {
     if(error.name === "SequelizeValidationError") {
       mybook = await Book.build(req.body);
       mybook.id = req.params.id; // make sure correct article gets updated
-      res.render("book_detail", { mybook, errors: error.errors, title: "Edit Book Entry" })
+      res.render("update-book", { mybook, errors: error.errors, title: "Edit Book Entry" })
     } else {
       throw error;
     }
@@ -123,7 +147,7 @@ router.post('/:id/edit', asyncHandler(async (req, res) => {
 router.get('/:id/delete', asyncHandler(async (req, res) => {
   const mybook = await Book.findByPk(req.params.id);
   if(mybook) {
-    res.render('book_detail', { mybook, title:'Delete Book Entry'});
+    res.render('update-book', { mybook, title:'Delete Book Entry'});
   } else {
     res.sendStatus(404);
   }
@@ -150,50 +174,24 @@ router.get('/:id', asyncHandler(async (req, res, next) => {
 
   if(mybook) {
     console.log("we have that book!!")
-    res.render('book_detail', { mybook, title: "this is my single book view"})
+    res.render('update-book', { mybook, title: mybook.title})
   } else {
-    console.log("i am in the else statemen")
-    const error = new Error();
-    error.status = 404;
-    error.message = 'Looks like we don\'t have that book you are looking for. :('
-    res.render('error', { mybook, error, title: "this is an errrooooorrr"})
-
-
+    res.sendStatus(404);
   }
 
-
-
-
-  // if(mybook) {
-  //   res.render('book_detail', { mybook, title: "this is my single book view"})
-  // } else {
-  //   res.sendStatus(404);
+  //   } else {
+  //   console.log("i am in the else statemen")
+  //   const error = new Error();
+  //   error.status = 404;
+  //   error.message = 'Looks like we don\'t have that book you are looking for. :('
+  //   res.render('error', { mybook, error, title: "Ooops!"})
   // }
+
+
+
+
 }));
 
-// // get individual book route 
-// router.get('/:id', asyncHandler(async (req, res, next) => {
-//   console.log(req.params.id);
-//   const mybook = await Book.findByPk(req.params.id);
-//   console.log("title" +    mybook.title);
-//   console.log(mybook +"im next to mybook before looking")
-
-//   if(mybook) {
-//     console.log("we have that book!!")
-//     res.render('book_detail', { mybook, title: "this is my single book view"})
-//   } else {
-//     console.log("i am in the else statemen")
-//     alert("i am in the else statemen")
-//     const err = new Error();
-//     err.status = 404;
-//     err.message = 'Looks like we don\'t have that book you are looking for. :('
-//     // res.render('page_not_found', { err,  title: "we dont have book with id" + req.params.id})
-//     next(err);
-
-
-//   }
-
-// }))
 
 
 module.exports = router;

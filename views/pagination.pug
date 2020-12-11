@@ -1,0 +1,18 @@
+div 
+  if(pagination)
+    hr
+    ul.pagination.pagination-md
+      if(pagination.previousPage > 0)
+        li.page-item
+            a.page-link(href=`/books${pagination.pageUri}${pagination.previousPage}`) Previous
+      if(pagination.currentPage + 1 <= pagination.pageCount)
+        li.page-item
+          a.page-link(href=`/books${pagination.pageUri}${pagination.nextPage}`) Next
+
+    
+      if(pagination.pageCount > 1)
+        -var x = 1
+          while x < pagination.pageCount+1
+            li.page-item
+              a.page-link(href=`/books${pagination.pageUri}${x}`) 
+                em=x++

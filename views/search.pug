@@ -1,16 +1,12 @@
 extends layout
-
 block content
   h2 Books 
   .wrap
-    form(method="get" action=`books/search/`)
+    form(method="get" action=` `)
       .search
         input.searchTerm(name="search" type='text', placeholder='What are you looking for?')
-        //- input.searchTerm(name="curentPage" type='text', placeholder='What are you looking for?')
-        //- input.searchTerm(name="limit" type='text', placeholder='What are you looking for?')
         button.searchButton(type='submit')
           i.icn.icn-find
-        
   a(href="/books/new", class="btn-new") Create book &#43;
   table
     thead
@@ -29,4 +25,4 @@ block content
             td= book.author
             td= book.genre
             td= book.year 
-    include pagination
+  include pagination

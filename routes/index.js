@@ -25,14 +25,35 @@ router.get('/', (req, res) =>{
 
 /* GET books page. */
 router.get('/books', asyncHandler(async (req, res) => {
-  const books = await Book.findAll();
-  res.render('index', {books, title: 'babel library'})
+
+  const Pagination = require('../utils/pagination')
+  let search = "";
+  let page_id = 1;
+  let currentPage = 1;
+  let pageUri = `/search/?search=${search}&curentPage=`;
+  let limit = 5
+  let offset = 0 ;
+  const { Op } = require("sequelize");
+  const results = await Book
+  .findAndCountAll({
+    where: {
+        title: {
+          [Op.substring]: search
+        }
+    },
+    offset: offset,
+    limit: 5
+  })  
+
+  let books = results.rows;
+  const perPage = limit;
+  let totalCount = results.count;
+  // Instantiate Pagination class
+  const Paginate = new Pagination(totalCount,currentPage,pageUri,perPage);
+  let pagination = Paginate;
+      res.render('search',{books, pagination, title: 'babel library' });
+
 }))
 
-
-// router.get('/', function(req, res, next) {
-//   // res.render('index', { title: 'Express' });
-  
-// });
 
 module.exports = router;
