@@ -2,7 +2,7 @@ extends layout
 block content
   h2 Books 
   .wrap
-    form(method="get" action=` `)
+    form(method="get" action=`/books/search`)
       .search
         input.searchTerm(name="search" type='text', placeholder='What are you looking for?')
         button.searchButton(type='submit')
@@ -16,7 +16,6 @@ block content
         th Genre
         th Year
     tbody
-
       each book in books
         book
           tr

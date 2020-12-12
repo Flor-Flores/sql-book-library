@@ -8,7 +8,6 @@ const Sequelize = require('sequelize');
 const routes = require('./routes/index');
 const books = require('./routes/books');
 
-// var Book = require("./models/book")
 var app = express();
 
 // view engine setup
@@ -31,15 +30,6 @@ const sequelize = new Sequelize({
 app.use('/', routes);
 app.use('/books', books);
 
-
-//error handlers
-
-// 404 handler
-// app.use((req, res, next) => {
-//   console.log('404 error handler called')
-
-//   res.status(404).render('page_not_found')
-// })
 
 
 // global error handler

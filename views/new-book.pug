@@ -6,21 +6,21 @@ block content
     h3="Please check your entry"
     ul
       each val in errors
-        li= val.message
+        li.validation-error= val.message
   form(action="/books/new", method="post")
 
     p
       label(for='title') Title
-      input#title(name='title' type='text' value=mybook.title autofocus='')
+      input#title(name='title' type='text' value=myBook.title autofocus='')
     p
       label(for='author') Author
-      input#author(name='author' type='text' value=mybook.author)
+      input#author(name='author' type='text' value=myBook.author)
     p
       label(for='genre') Genre
-      input#genre(name='genre' type='text' value=mybook.genre)
+      input#genre(name='genre' type='text' value=myBook.genre)
     p
       label(for='year') Year
-      input#year(name='year' type='text' value=mybook.year)
+      input#year(name='year' type='text' value=myBook.year)
     p
       a.button(href='/books/') Cancel
     p

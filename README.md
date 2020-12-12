@@ -3,8 +3,7 @@
 ## Treehouse Techdegree:FSJS 
 ### project 8 - Sql Library
 
-<!-- #### Built using React.js Axios & React-Router-Dom
-#### The user can use the search form or the navigation with pre defined/loaded searches.
+#### Built using Node.js Express.js Sequelize
+#### A web application for listing, adding, updating and deleting books in a library.
 
-### This project "meets expectations"
-### I completed most of the "exceeds" will continue work on storing searched photos sets in the history. Any tips apreciated.  -->
+### This project "exceeds expectations"

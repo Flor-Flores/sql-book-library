@@ -13,6 +13,10 @@ div
       if(pagination.pageCount > 1)
         -var x = 1
           while x < pagination.pageCount+1
+            if(pagination.currentPage === x)
+              li.page-item.active
+                a.page-link(href=`/books${pagination.pageUri}${x}`) 
+                  em=x++ 
             li.page-item
               a.page-link(href=`/books${pagination.pageUri}${x}`) 
-                em=x++
+                em=x++ 

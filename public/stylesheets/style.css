@@ -178,3 +178,13 @@ li.page-item {
     padding: .5em;
     color: rgb(90, 90, 90);
 }
+
+
+li.validation-error {
+  color: magenta;
+  font-weight: bold;
+}
+
+.page-item.active {
+  background-color: aqua;
+}

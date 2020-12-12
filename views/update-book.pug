@@ -1,28 +1,28 @@
 extends layout
 
 block content
-    h1 Update Book: #{mybook.title}
+    h1 Update Book: #{myBook.title}
     if errors 
       h3="Please check your entry"
       ul
         each val in errors
-          li= val.message        
-    form(action="/books/" + mybook.id + "/edit", method="post")
+          li.validation-Errors= val.message        
+    form(action="/books/" + myBook.id + "/edit", method="post")
       p
         label(for='title') Title
-        input#title(name='title' type='text' value=mybook.title)
+        input#title(name='title' type='text' value=myBook.title)
       p
         label(for='author') Author
-        input#author(name='author' type='text' value=mybook.author)
+        input#author(name='author' type='text' value=myBook.author)
       p
         label(for='genre') Genre
-        input#genre(name='genre' type='text' value=mybook.genre)
+        input#genre(name='genre' type='text' value=myBook.genre)
       p
         label(for='year') Year
-        input#year(name='year' type='text' value=mybook.year)
+        input#year(name='year' type='text' value=myBook.year)
       p
         input(type='submit' value='Update Book')
-    form(method='post' action=`/books/${mybook.id}/delete` onsubmit="return confirm('Do you really want to delete this book?');")
+    form(method='post' action=`/books/${myBook.id}/delete` onsubmit="return confirm('Do you really want to delete this book?');")
       p
         a.button(href='/books') Cancel
       p
